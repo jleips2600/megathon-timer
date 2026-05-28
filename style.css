@@ -1,3 +1,209 @@
+/* ═══════════════════════════════════════════════════
+   MEGATHON WIDGET DEMO — style.css
+   Sections:
+     1. CSS Reset & Base
+     2. Demo Chrome (shell, header, panel, footer)
+     3. Widget Viewport
+     4. Widget Internals (ported from widget JS htmlCode)
+   ═══════════════════════════════════════════════════ */
+
+/* ─── 1. RESET & BASE ─────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --bg:        #0a0a0f;
+  --surface:   #111118;
+  --surface2:  #1a1a24;
+  --border:    #2a2a3a;
+  --accent:    #e84057;
+  --green:     #00e57a;
+  --blue:      #6c8ef5;
+  --purple:    #a855f7;
+  --gold:      #f5c842;
+  --teal:      #22d3c8;
+  --text:      #e8e8f0;
+  --text-dim:  #6b6b80;
+  --font-ui:   'Oswald', sans-serif;
+  --font-mono: 'Share Tech Mono', monospace;
+  --font-game: 'Luckiest Guy', cursive;
+}
+
+html, body {
+  min-height: 100%;
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-ui);
+}
+
+/* ─── 2. DEMO CHROME ──────────────────────────────── */
+#demo-shell {
+  max-width: 1080px;
+  margin: 0 auto;
+  padding: 24px 16px 40px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+/* Header */
+#demo-header {
+  text-align: center;
+  padding-bottom: 8px;
+  border-bottom: 1px solid var(--border);
+}
+
+#demo-logo {
+  font-family: var(--font-game);
+  font-size: 42px;
+  letter-spacing: 2px;
+  line-height: 1;
+  margin-bottom: 6px;
+}
+
+.logo-mega { color: #fff; }
+.logo-thon { color: var(--accent); }
+
+.logo-badge {
+  display: inline-block;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  background: var(--accent);
+  color: #fff;
+  padding: 3px 8px;
+  border-radius: 4px;
+  vertical-align: middle;
+  margin-left: 10px;
+  letter-spacing: 1px;
+}
+
+#demo-tagline {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--text-dim);
+  letter-spacing: 1px;
+}
+
+/* ─── 3. WIDGET VIEWPORT ──────────────────────────── */
+#widget-viewport {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 1200 / 800;
+  max-height: 540px;
+  background: linear-gradient(135deg, #12121f 0%, #1a1030 50%, #0f1a20 100%);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* CRT scanline overlay */
+#widget-scanlines {
+  position: absolute;
+  inset: 0;
+  background: repeating-linear-gradient(
+    0deg,
+    transparent,
+    transparent 2px,
+    rgba(0,0,0,0.04) 2px,
+    rgba(0,0,0,0.04) 4px
+  );
+  pointer-events: none;
+  z-index: 50;
+  border-radius: 12px;
+}
+
+/* Scale the widget's 1200×800 canvas to fit the viewport */
+#main {
+  position: relative;
+  width: 1200px;
+  height: 800px;
+  transform-origin: center center;
+  /* JS will set transform: scale() via resize observer */
+}
+
+/* ─── 4. CONTROL PANEL ────────────────────────────── */
+#control-panel {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 12px;
+}
+
+.panel-section {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 14px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.section-label {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 2px;
+  color: var(--text-dim);
+  text-transform: uppercase;
+}
+
+.btn-row {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+/* Buttons */
+.btn {
+  font-family: var(--font-ui);
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  padding: 8px 14px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: transform 0.1s, filter 0.15s, box-shadow 0.15s;
+  flex: 1;
+  min-width: 80px;
+  white-space: nowrap;
+}
+
+.btn:active { transform: scale(0.96); }
+.btn:hover  { filter: brightness(1.15); box-shadow: 0 0 12px currentColor; }
+
+.btn-green  { background: var(--green);  color: #000; }
+.btn-red    { background: var(--accent); color: #fff; }
+.btn-ghost  { background: var(--surface2); color: var(--text); border: 1px solid var(--border); }
+.btn-purple { background: var(--purple); color: #fff; }
+.btn-blue   { background: var(--blue);   color: #fff; }
+.btn-gold   { background: var(--gold);   color: #000; }
+.btn-teal   { background: var(--teal);   color: #000; }
+
+.btn.dim    { opacity: 0.75; }
+.btn.dim:hover { opacity: 1; }
+
+/* Footer */
+#demo-footer {
+  text-align: center;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--text-dim);
+  padding-top: 12px;
+  border-top: 1px solid var(--border);
+}
+
+#demo-footer a { color: var(--accent); text-decoration: none; }
+#demo-footer a:hover { text-decoration: underline; }
+
+
+/* ═══════════════════════════════════════════════════
+   WIDGET INTERNALS
+   (Styles that lived inside the widget's htmlCode
+    string — now extracted here for cleanliness)
+   ═══════════════════════════════════════════════════ */
+
 #message {
   position: absolute;
   visibility: hidden;
@@ -10,8 +216,7 @@
   z-index: 100;
 }
 
-.tracker
-{
+.tracker {
   font-size: 48px;
   font-family: "Luckiest Guy";
   color: white;
@@ -19,15 +224,13 @@
   opacity: 1;
   justify-content: center;
   align-items: center;
-  padding: 0 13px; 
+  padding: 0 13px;
   margin: 0;
   width: fit-content;
   -webkit-text-stroke: 0px black;
 }
 
-
-#summaryEarningsText
-{  
+#summaryEarningsText {
   visibility: visible;
   font-size: 45px;
   user-select: none;
@@ -37,12 +240,8 @@
 }
 
 @keyframes scaleAnimation {
-  0%, 100% {
-    transform: scale(1);
-  }
-  50% {
-    transform: scale(1.1);
-  }
+  0%, 100% { transform: scale(1); }
+  50%       { transform: scale(1.1); }
 }
 
 .summaryStar {
@@ -60,17 +259,9 @@
   text-overflow: ellipsis;
 }
 
-.starName {
-  font-size: 40px;
-}
-
-.starTitle {
-  font-size: 20px;
-}
-
-.starValue {
-  font-size: 25px;
-}
+.starName  { font-size: 40px; }
+.starTitle { font-size: 20px; }
+.starValue { font-size: 25px; }
 
 .star {
   position: absolute;
@@ -86,16 +277,11 @@
 }
 
 @keyframes starRotAnimation {
-  0% {
-    transform: rotate(0deg);
-  }
-  100% {
-    transform: rotate(360deg);
-  }
+  0%   { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
 }
 
-#summaryStarsContainer
-{
+#summaryStarsContainer {
   visibility: visible;
   display: flex;
   width: 900px;
@@ -112,10 +298,14 @@
   grid-template-columns: repeat(3, 1fr);
   row-gap: 0;
   width: 900px;
+  height: 300px;
   text-overflow: ellipsis;
   overflow: hidden;
   justify-content: center;
   align-items: center;
+  z-index: 10;
+  margin: 0;
+  padding: 0;
 }
 
 .summaryStat {
@@ -130,42 +320,12 @@
   align-items: center;
   white-space: nowrap;
   text-overflow: ellipsis;
-
 }
 
-.summaryStatText {
-  font-size: 17px;
-  justify-content: flex-start;
-  
-}
+.summaryStatText  { font-size: 17px; justify-content: flex-start; }
+.summaryStatValue { font-size: 35px; justify-content: flex-end; }
 
-.summaryStatValue {
-  font-size: 35px;
-  justify-content: flex-end;
-}
-
-
-#summaryStatsContainer
-{
-  visibility: visible;
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  row-gap: 0;
-  width: 900px;
-  height: 300px;
-  white-space: wrap;
-  text-overflow: ellipsis;
-  overflow: hidden;
-  justify-content: center;
-  align-items: center;
-  z-index: 10;
-  margin: 0;
-  padding: 0;
-}
-
-
-#summaryContainer
-{
+#summaryContainer {
   display: none;
   visibility: visible;
   position: absolute;
@@ -184,8 +344,7 @@
   border: 3px solid black;
 }
 
-#summaryTitleContainer
-{
+#summaryTitleContainer {
   visibility: visible;
   display: flex;
   width: 900px;
@@ -198,8 +357,7 @@
   text-overflow: ellipsis;
 }
 
-#summaryEarningsContainer
-{
+#summaryEarningsContainer {
   visibility: visible;
   display: flex;
   width: 900px;
@@ -213,9 +371,7 @@
   margin: 0 auto;
 }
 
-
-#summaryTitleText
-{  
+#summaryTitleText {
   white-space: nowrap;
   text-overflow: ellipsis;
   visibility: visible;
@@ -225,14 +381,13 @@
   text-decoration: underline;
 }
 
-
 #goalImageContainer {
   height: 40px;
   width: 40px;
   display: flex;
   align-items: center;
-  flex-direction: column; 
-  align-items: center; 
+  flex-direction: column;
+  align-items: center;
   margin-right: 10px;
   z-index: 5;
 }
@@ -246,7 +401,6 @@
   margin: 0;
   z-index: 5;
 }
-
 
 #goalText {
   font-size: 35px;
@@ -282,8 +436,7 @@
   mask: url("https://www.ohmysez.com/megathon/UI/lockPad.png") center/contain;
 }
 
-#timerContainer
-{
+#timerContainer {
   visibility: visible;
   height: 120px;
   user-select: none;
@@ -293,8 +446,7 @@
   justify-content: center;
 }
 
-#timerText
-{    
+#timerText {
   visibility: visible;
   font-size: 120px;
   font-family: 'Luckiest Guy';
@@ -302,14 +454,9 @@
   -webkit-text-stroke: 0px black;
 }
 
-.popAnimationClass
-{
-	animation: popAnimation 1s ease-out;
-}
+.popAnimationClass { animation: popAnimation 1s ease-out; }
 
-
-#container
-{
+#container {
   user-select: none;
   width: 1200px;
   height: 800px;
@@ -321,93 +468,61 @@
   padding: 0;
 }
 
-
-
-.goalAnimationClass {
-  animation: goalAnimation 4.5s ease-in;
-}
+.goalAnimationClass    { animation: goalAnimation 4.5s ease-in; }
+.newGoalAnimationClass { animation: newGoalAnimation 1s ease-in; }
+.unlockAnimationClass  { animation: unlockAnimation .2s forwards; animation-delay: 1.5s; }
+.rattleAnimationClass  { animation: rattleAnimation .2s 7; }
+.increaseAnimationClass { animation: increaseAnimation 1s ease-in-out; }
 
 @keyframes goalAnimation {
-  0% {
-    transform: scale(1);
-  }
-  20% {
-    transform: scale(1.5);
-  }
-  80% {
-    transform: scale(1.5);
-  }
-  90% {
-    transform: scale(0);
-  }
-  100% {
-    transform: scale(0);
-  }
-}
-
-.newGoalAnimationClass {
-  animation: newGoalAnimation 1s ease-in;
+  0%   { transform: scale(1); }
+  20%  { transform: scale(1.5); }
+  80%  { transform: scale(1.5); }
+  90%  { transform: scale(0); }
+  100% { transform: scale(0); }
 }
 
 @keyframes newGoalAnimation {
-  0% {
-    transform: scale(0);
-  }
-  50% {
-    transform: scale(1.5);
-  }
-  80% {
-    transform: scale(.8);
-  }
-  90% {
-    transform: scale(1.1);
-  }
-  100% {
-    transform: scale(1);
-  }
-}
-
-
-.unlockAnimationClass {
-  animation: unlockAnimation .2s forwards;
-  animation-delay: 1.5s;
+  0%   { transform: scale(0); }
+  50%  { transform: scale(1.5); }
+  80%  { transform: scale(.8); }
+  90%  { transform: scale(1.1); }
+  100% { transform: scale(1); }
 }
 
 @keyframes unlockAnimation {
-  0% {
-  	transform: translateY(0);
-  }
-  100% {
-    transform: translateY(-8px);
-  }
-}
-
-.rattleAnimationClass {
-  animation: rattleAnimation .2s 7;
-  animation-delay: 0s;
+  0%   { transform: translateY(0); }
+  100% { transform: translateY(-8px); }
 }
 
 @keyframes rattleAnimation {
-  0% {
-    transform: scale(1, 1) rotate(0);
-  }
-  25% {
-	transform: scale(1, 1)  rotate(-15deg);
-  }  
-  50% {
-    transform: scale(1, 1)  rotate(0);
-  }
-  75% {
-	transform: scale(1, 1)  rotate(15deg);
-  }
-  100% {
-    transform: scale(1, 1)  rotate(0);
-  }
+  0%   { transform: scale(1, 1) rotate(0); }
+  25%  { transform: scale(1, 1) rotate(-15deg); }
+  50%  { transform: scale(1, 1) rotate(0); }
+  75%  { transform: scale(1, 1) rotate(15deg); }
+  100% { transform: scale(1, 1) rotate(0); }
 }
 
+@keyframes fadeAnimation {
+  0%   { transform: scale(0, 0); opacity: 0; }
+  100% { transform: scale(1, 1); opacity: 1; }
+}
 
-#cappedText
-{
+@keyframes popAnimation {
+  0%   { transform: scale(1, 1) translateY(0); }
+  35%  { transform: scale(1.3, 1.3) translateY(-15px); }
+  100% { transform: scale(1, 1) translateY(0px); }
+}
+
+@keyframes increaseAnimation {
+  0%   { transform: scale(1, 1) translateY(0); }
+  30%  { transform: scale(.7, 1.3) translateY(-30px); }
+  50%  { transform: scale(1.3, .7) translateY(14px); }
+  70%  { transform: scale(.9, 1.1) translateY(-8px); }
+  100% { transform: scale(1, 1) translateY(0); }
+}
+
+#cappedText {
   visibility: hidden;
   position: absolute;
   width: 500px;
@@ -417,13 +532,13 @@
   font-family: 'Luckiest Guy';
   color: white;
   letter-spacing: 5px;
-  z-index: 5; 
+  z-index: 5;
   padding: 0 auto;
   border-radius: 20px;
+  text-align: center;
 }
 
-#eventTitleText
-{  
+#eventTitleText {
   visibility: visible;
   font-size: 60px;
   font-family: 'Luckiest Guy';
@@ -435,63 +550,11 @@
   margin: 0;
 }
 
-
-
-
-#trackersContainer
-{
+#trackersContainer {
   user-select: none;
   height: 48px;
   text-align: center;
   display: flex;
-  align-items: center; 
+  align-items: center;
   justify-content: center;
-}
-
-
-
-
-@keyframes fadeAnimation {
-  0% {
-    transform: scale(0, 0);
-    opacity: 0;
-  }
-  100% {
-    transform: scale(1, 1);
-    opacity: 1;
-  }
-}
-
-@keyframes popAnimation {
-  0% {
-    transform: scale(1, 1) translateY(0);
-  }
-  35% {
-    transform: scale(1.3, 1.3) translateY(-15px);
-  }
-  100% {
-    transform: scale(1, ) translateY(0px);
-  }
-}
-
-@keyframes increaseAnimation {
-  0% {
-    transform: scale(1, 1) translateY(0);
-  }
-  30% {
-    transform: scale(.7, 1.3) translateY(-30px);
-  }
-  50% {
-    transform: scale(1.3, .7) translateY(14px);
-  }
-  70% {
-    transform: scale(.9, 1.1) translateY(-8px);
-  }
-  100% {
-    transform: scale(1, 1) translateY(0);
-  }
-}
-
-.increaseAnimationClass {
-	  animation: increaseAnimation 1s ease-in-out;
 }
