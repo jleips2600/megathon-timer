@@ -4,153 +4,130 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Megathon Widget — Live Demo</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Luckiest+Guy&family=Oswald:wght@400;600;700&family=Share+Tech+Mono&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
 
-<div id="container">
-  <div id="message">
-  </div>
-  <p id="eventTitleText">Megathon</p>
-  <div id="timerContainer">
-  	<p id="timerText">00:00:00</p>
-  </div>
-  
-  <div id="trackersContainer">
-    <p id="cappedText">CAPPED!</p>
-  </div>
-  <div id="goalContainer">
-    <div id="goalImageContainer">
-      <div id="lockPadImage"></div>
-      <div id="lockShackleImage"></div>
+  <!-- ═══════════════════════════════════════
+       DEMO CHROME — control panel overlay
+  ════════════════════════════════════════ -->
+  <div id="demo-shell">
+
+    <header id="demo-header">
+      <div id="demo-logo">
+        <span class="logo-mega">MEGA</span><span class="logo-thon">THON</span>
+        <span class="logo-badge">LIVE DEMO</span>
+      </div>
+      <p id="demo-tagline">StreamElements Widget — Interactive Preview</p>
+    </header>
+
+    <!-- Widget viewport -->
+    <div id="widget-viewport">
+      <div id="widget-scanlines"></div>
+      <div id="main"></div>
     </div>
-    <p id="goalText">Goal - Reward<p>
-  </div>
-  <div id="summaryContainer">
-  	<div id="summaryTitleContainer">
-  		<p id="summaryTitleText">Megathon Summary</p>
-    </div>
-    <div id="summaryEarningsContainer">
-      <p id="summaryEarningsText">$0 TOTAL!</p>
-    </div>
-    <div id="summaryStatsContainer">
-      
-      <div class="summaryStat">
-        <div class="summaryStatText">
-          START
-        </div>
-        <div class="summaryStatValue">
-          01-01-23
+
+    <!-- Control Panel -->
+    <div id="control-panel">
+
+      <div class="panel-section">
+        <div class="section-label">⏱ TIMER CONTROLS</div>
+        <div class="btn-row">
+          <button class="btn btn-green" id="btn-start">▶ START</button>
+          <button class="btn btn-red" id="btn-stop">⏸ STOP</button>
+          <button class="btn btn-ghost" id="btn-reset">↺ NEW EVENT</button>
         </div>
       </div>
-      
-      <div class="summaryStat">
-        <div class="summaryStatText">
-          SUPPORTERS
-        </div>
-        <div class="summaryStatValue">
-          0
-        </div>
-      </div>
-      
-      <div class="summaryStat">
-        <div class="summaryStatText">
-          CHATTERS
-        </div>
-        <div class="summaryStatValue">
-          0
+
+      <div class="panel-section">
+        <div class="section-label">📦 SUBS</div>
+        <div class="btn-row">
+          <button class="btn btn-purple" onclick="SESimulate.subscriber('TestViewer', 1, '1000')">+1 T1 Sub</button>
+          <button class="btn btn-purple" onclick="SESimulate.subscriber('GiftKing', 5, '1000')">+5 Gift Subs</button>
+          <button class="btn btn-purple dim" onclick="SESimulate.subscriber('WhaleUser', 1, '3000')">+1 T3 Sub</button>
         </div>
       </div>
-      
-      <div class="summaryStat">
-        <div class="summaryStatText">
-          END
-        </div>
-        <div class="summaryStatValue">
-          01-01-23
-        </div>
-      </div>
-      
-      <div class="summaryStat">
-        <div class="summaryStatText">
-          SUBS
-        </div>
-        <div class="summaryStatValue">
-          0
+
+      <div class="panel-section">
+        <div class="section-label">💜 BITS</div>
+        <div class="btn-row">
+          <button class="btn btn-blue" onclick="SESimulate.cheer('BitBoy', 100)">100 Bits</button>
+          <button class="btn btn-blue" onclick="SESimulate.cheer('BitBoy', 500)">500 Bits</button>
+          <button class="btn btn-blue dim" onclick="SESimulate.cheer('BigBitter', 1000)">1000 Bits</button>
         </div>
       </div>
-      
-      <div class="summaryStat">
-        <div class="summaryStatText">
-          MESSAGES
-        </div>
-        <div class="summaryStatValue">
-          0
-        </div>
-      </div>
-      
-      <div class="summaryStat">
-        <div class="summaryStatText">
-          HOURS
-        </div>
-        <div class="summaryStatValue">
-          0
+
+      <div class="panel-section">
+        <div class="section-label">💵 DONATIONS</div>
+        <div class="btn-row">
+          <button class="btn btn-gold" onclick="SESimulate.tip('TipUser', 5)">$5 Dono</button>
+          <button class="btn btn-gold" onclick="SESimulate.tip('BigTipper', 20)">$20 Dono</button>
+          <button class="btn btn-gold dim" onclick="SESimulate.tip('Whale', 100)">$100 Dono</button>
         </div>
       </div>
-      
-      <div class="summaryStat">
-        <div class="summaryStatText">
-          BITS
-        </div>
-        <div class="summaryStatValue">
-          0
-        </div>
-      </div>
-      
-      <div class="summaryStat">
-        <div class="summaryStatText">
-          FOLLOWS
-        </div>
-        <div class="summaryStatValue">
-          0
+
+      <div class="panel-section">
+        <div class="section-label">📣 EVENTS</div>
+        <div class="btn-row">
+          <button class="btn btn-teal" onclick="SESimulate.follower('NewFollower')">+ Follow</button>
+          <button class="btn btn-teal" onclick="SESimulate.raid('RaidChannel', 50)">🚀 Raid (50)</button>
+          <button class="btn btn-teal dim" onclick="SESimulate.raid('MegaRaid', 200)">🚀 Raid (200)</button>
         </div>
       </div>
-      
-      <div class="summaryStat">
-        <div class="summaryStatText">
-          DAYS
-        </div>
-        <div class="summaryStatValue">
-          0
-        </div>
-      </div>
-      
-      <div class="summaryStat">
-        <div class="summaryStatText">
-          DONOS
-        </div>
-        <div class="summaryStatValue">
-          0
+
+      <div class="panel-section">
+        <div class="section-label">⚙️ MANUAL TIME</div>
+        <div class="btn-row">
+          <button class="btn btn-ghost" onclick="fireCommand('!addtime 300')">+5 min</button>
+          <button class="btn btn-ghost" onclick="fireCommand('!addtime 3600')">+1 hr</button>
+          <button class="btn btn-ghost dim" onclick="fireCommand('!subtime 300')">-5 min</button>
         </div>
       </div>
-      
-      <div class="summaryStat">
-        <div class="summaryStatText">
-          RAIDS
-        </div>
-        <div class="summaryStatValue">
-          0
-        </div>
-      </div>
-      
-    </div>
-    <div id="summaryStarsContainer">
-      <div class="summaryStar"><div class="starTitle">SUB STAR</div><div class="starName">USER 1</div><div class="starValue">0 subs</div><div class="star"></div></div>
-       <div class="summaryStar"><div class="starTitle">BIT STAR</div><div class="starName">USER 2</div><div class="starValue">0 bits</div><div class="star"></div></div>
-       <div class="summaryStar"><div class="starTitle">DONO STAR</div><div class="starName">USER 3</div><div class="starValue">$0</div><div class="star"></div></div>
-    </div>
-  </div>
-</div>
+
+    </div><!-- /control-panel -->
+
+    <footer id="demo-footer">
+      Built with ❤️ · StreamElements Widget · <a href="https://github.com" target="_blank">View on GitHub</a>
+    </footer>
+
+  </div><!-- /demo-shell -->
+
+  <!-- SE API stub must load before widget JS -->
+  <script src="se-simulate.js"></script>
+  <script src="script.js"></script>
+
+  <!-- Wire up demo buttons -->
+  <script>
+    document.getElementById('btn-start').addEventListener('click', () => {
+      if (typeof startTimer === 'function') startTimer();
+    });
+    document.getElementById('btn-stop').addEventListener('click', () => {
+      if (typeof stopTimer === 'function') stopTimer();
+    });
+    document.getElementById('btn-reset').addEventListener('click', () => {
+      if (typeof newEvent === 'function') newEvent();
+    });
+
+    // Helper: fire a fake mod chat command
+    function fireCommand(text) {
+      window.dispatchEvent(new CustomEvent('onEventReceived', {
+        detail: {
+          listener: 'message',
+          event: {
+            name: 'DemoMod',
+            data: {
+              nick: window._ownerName || 'megathon_demo',
+              text: text,
+              tags: { mod: 1 }
+            }
+          }
+        }
+      }));
+    }
+  </script>
 
 </body>
 </html>
